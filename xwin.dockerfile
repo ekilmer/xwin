@@ -10,25 +10,25 @@ RUN set -eux; \
     curl --fail https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor > $KEYRINGS/llvm.gpg; \
     # wine
     curl --fail https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > $KEYRINGS/winehq.gpg; \
-    echo "deb [signed-by=$KEYRINGS/llvm.gpg] http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-13 main" > /etc/apt/sources.list.d/llvm.list; \
+    echo "deb [signed-by=$KEYRINGS/llvm.gpg] http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main" > /etc/apt/sources.list.d/llvm.list; \
     echo "deb [signed-by=$KEYRINGS/winehq.gpg] https://dl.winehq.org/wine-builds/debian/ bullseye main" > /etc/apt/sources.list.d/winehq.list;
 
 RUN set -eux; \
     dpkg --add-architecture i386; \
     # Skipping all of the "recommended" cruft reduces total images size by ~300MiB
     apt-get update && apt-get install --no-install-recommends -y \
-        clang-13 \
+        clang-14 \
         # llvm-ar
-        llvm-13 \
-        lld-13 \
+        llvm-14 \
+        lld-14 \
         # get a recent wine so we can run tests
         winehq-staging \
         # Unpack xwin
         tar; \
     # ensure that clang/clang++ are callable directly
-    ln -s clang-13 /usr/bin/clang && ln -s clang /usr/bin/clang++ && ln -s lld-13 /usr/bin/ld.lld; \
+    ln -s clang-14 /usr/bin/clang && ln -s clang /usr/bin/clang++ && ln -s lld-14 /usr/bin/ld.lld; \
     # We also need to setup symlinks ourselves for the MSVC shims because they aren't in the debian packages
-    ln -s clang-13 /usr/bin/clang-cl && ln -s llvm-ar-13 /usr/bin/llvm-lib && ln -s lld-link-13 /usr/bin/lld-link; \
+    ln -s clang-14 /usr/bin/clang-cl && ln -s llvm-ar-14 /usr/bin/llvm-lib && ln -s lld-link-14 /usr/bin/lld-link; \
     # Verify the symlinks are correct
     clang++ -v; \
     ld.lld -v; \
