@@ -1,5 +1,5 @@
 # We'll just use the official Rust image rather than build our own from scratch
-FROM docker.io/library/rust:1.58.1-slim-bullseye
+FROM docker.io/library/rust:1.63.0-slim-bullseye
 
 ENV KEYRINGS /usr/local/share/keyrings
 
